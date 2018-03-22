@@ -1,0 +1,2 @@
+# averaging-master
+MetaTrader4用の自動売買プログラム。損失許容上限までナンピンで頑張るAE
