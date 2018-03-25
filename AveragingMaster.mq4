@@ -18,7 +18,7 @@ input int MaxSlippage=30;
 input double AveragingStep=0.001;
 input int GMTShift=0;
 input int TestDataGMTOffset=0;
-input int TestSummerTimeShift=0;
+input int TestSummerTimeShift=1;
 input int magic=1134112;
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -87,8 +87,8 @@ bool Entry()
       return true;
      }
 
-   ima1 = iMA(NULL,0, 75,0,MODE_SMA,PRICE_CLOSE,1);
-   ima2 = iMA(NULL,0, 75,0,MODE_SMA,PRICE_CLOSE,3);
+   ima1 = iMA(NULL,0,75,0,MODE_SMA,PRICE_CLOSE,1);
+   ima2 = iMA(NULL,0,75,0,MODE_SMA,PRICE_CLOSE,3);
 
    lotSize=CalcLotSize();
 
@@ -326,7 +326,7 @@ datetime TimeGmt()
    datetime gmt;
 
    gmt=TimeGMT();
-   gmt += (GMTShift * 3600);
+   gmt+=(GMTShift*3600);
 
    if(!IsTesting())
      {
