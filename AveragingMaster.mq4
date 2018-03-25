@@ -41,7 +41,7 @@ void OnTick()
   {
    int total;
 
-   total=OrdersTotal();
+   total=MyOrdersTotal();
 
    if(total==0)
      {
@@ -51,11 +51,64 @@ void OnTick()
      {
       CloseAll();
 
-      if(OrdersTotal()>0)
+      if(MyOrdersTotal()>0)
         {
          Averaging();
         }
      }
+  }
+//+------------------------------------------------------------------+
+//| count orders which has my magic number.                                                                 |
+//+------------------------------------------------------------------+
+int MyOrdersTotal()
+  {
+   int ordersTotal;
+   bool isError;
+
+   ordersTotal=0;
+
+   for(int pos=0; pos<OrdersTotal(); pos++)
+     {
+      if(!OrderSelect(pos,SELECT_BY_POS,MODE_TRADES))
+        {
+         LogWarn("Server failed to select order pos="+(string)pos+" Err="+(string)GetLastError());
+         isError=true;
+         continue;
+        }
+
+      if(OrderMagicNumber()==magic)
+        {
+         ordersTotal++;
+        }
+     }
+
+   return ordersTotal;
+  }
+//+------------------------------------------------------------------+
+//| get last order pos which has my magic number.                                                                 |
+//+------------------------------------------------------------------+
+int MyLastOrderPos()
+  {
+   int lastOrderPos;
+
+   lastOrderPos=-1;
+
+   for(int pos=OrdersTotal()-1; pos>=0; pos--)
+     {
+      if(!OrderSelect(pos,SELECT_BY_POS,MODE_TRADES))
+        {
+         LogWarn("Server failed to select order pos="+(string)pos+" Err="+(string)GetLastError());
+         continue;
+        }
+
+      if(OrderMagicNumber()==magic)
+        {
+         lastOrderPos=pos;
+         break;
+        }
+     }
+
+   return lastOrderPos;
   }
 //+------------------------------------------------------------------+
 //| entry if needed                                                                 |
@@ -153,11 +206,11 @@ bool CloseAll()
      }
 
    int tickets[];
-   ArrayResize(tickets,OrdersTotal());
+   ArrayResize(tickets,MyOrdersTotal());
    ArrayFill(tickets,0,ArraySize(tickets),0);
 
    isError=false;
-   for(int pos=0; pos<OrdersTotal(); pos++)
+   for(int pos=0; pos<MyOrdersTotal(); pos++)
      {
       if(!OrderSelect(pos,SELECT_BY_POS))
         {
@@ -205,7 +258,7 @@ bool Averaging()
    int orderType;
    double prevPrice,lotSize,spread,step;
 
-   if(!OrderSelect(OrdersTotal()-1,SELECT_BY_POS,MODE_TRADES))
+   if(!OrderSelect(MyLastOrderPos(),SELECT_BY_POS,MODE_TRADES))
      {
       LogWarn("Server failed to select order. Err="+(string)GetLastError());
       return false;
@@ -264,7 +317,7 @@ double CalcNetProfit()
 
    profit=0;
 
-   for(int pos=0; pos<OrdersTotal(); pos++)
+   for(int pos=0; pos<MyOrdersTotal(); pos++)
      {
       if(!OrderSelect(pos,SELECT_BY_POS))
         {
