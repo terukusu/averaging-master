@@ -26,6 +26,6 @@ MetaTrader4用のExpert Advisor(自動売買プログラム)。損失許容上�
 - 日本時間16時には強制クローズ
 
 # バックテスト結果
-2003年6月1日〜2018年3月13日
+2003年6月1日〜2018年3月30日
 
 [バックテスト結果の詳細](https://www.terukusu.org/test/AveragingMaster_2003-2018_20170401.htm)
