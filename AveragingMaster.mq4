@@ -20,6 +20,7 @@ input int GMTShift=0;
 input int TestDataGMTOffset=0;
 input int TestSummerTimeShift=1;
 input int magic=1134112;
+
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
@@ -49,6 +50,7 @@ void OnTick()
      }
    else if(total>0)
      {
+
       CloseAll();
 
       if(MyOrdersTotal()>0)
@@ -83,6 +85,32 @@ int MyOrdersTotal()
      }
 
    return ordersTotal;
+  }
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+int MyFirstOrderPos()
+  {
+   int firstOrderPos;
+
+   firstOrderPos=-1;
+
+   for(int pos=0; pos<OrdersTotal(); pos++)
+     {
+      if(!OrderSelect(pos,SELECT_BY_POS,MODE_TRADES))
+        {
+         LogWarn("Server failed to select order pos="+(string)pos+" Err="+(string)GetLastError());
+         continue;
+        }
+
+      if(OrderMagicNumber()==magic)
+        {
+         firstOrderPos=pos;
+         break;
+        }
+     }
+
+   return firstOrderPos;
   }
 //+------------------------------------------------------------------+
 //| get last order pos which has my magic number.                                                                 |
@@ -140,8 +168,8 @@ bool Entry()
       return true;
      }
 
-   ima1 = iMA(NULL,0,75,0,MODE_SMA,PRICE_CLOSE,1);
-   ima2 = iMA(NULL,0,75,0,MODE_SMA,PRICE_CLOSE,3);
+   ima1 = iMA(NULL,PERIOD_H4,6,0,MODE_SMA,PRICE_CLOSE,0);
+   ima2 = iMA(NULL,PERIOD_H4,6,0,MODE_SMA,PRICE_CLOSE,1);
 
    lotSize=CalcLotSize();
 
@@ -186,7 +214,7 @@ bool CloseAll()
    hour=TimeHour(TimeGmt());
    netProfit=CalcNetProfit();
 
-   if(!OrderSelect(0,SELECT_BY_POS,MODE_TRADES))
+   if(!OrderSelect(MyFirstOrderPos(),SELECT_BY_POS,MODE_TRADES))
      {
       LogWarn("Server failed to select order. Err="+(string)GetLastError());
       return false;
@@ -199,7 +227,7 @@ bool CloseAll()
    targetProfit=originalEquity*ProfitPercentage/100;
    targetLoss=originalEquity*LossPercentage/100;
 
-   if(!(netProfit>=targetProfit || netProfit<=-targetLoss || (hour>=7 && hour<21)))
+   if(!(netProfit>=targetProfit || netProfit<=-targetLoss || (hour>=8 && hour<21)))
      {
       // no need to close
       return true;
@@ -280,8 +308,13 @@ bool Averaging()
       return false;
      }
 
-//step = iATR(NULL,0,3,1) * 3;
-   step=AveragingStep;
+   if(MyOrdersTotal()>4)
+     {
+      return false;
+     }
+
+   step=iATR(NULL,0,3,1)*3;
+//step=AveragingStep;
 
    if(orderType==OP_BUY)
      {
@@ -349,7 +382,8 @@ double CalcLotSize()
    double minLot         = MarketInfo(NULL, MODE_MINLOT);
    double maxLot         = MarketInfo(NULL, MODE_MAXLOT);
 
-   lot=RiskFactor*equity/1000;
+//lot=RiskFactor*equity/1000;
+   lot=RiskFactor*freeMargin/1000;
    lot=MathFloor(lot/lotStep)*lotStep;
 
    lotLimit=freeMargin/requiredMargin;
