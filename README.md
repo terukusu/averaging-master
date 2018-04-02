@@ -1,5 +1,5 @@
 # これは何か
-MetaTrader4用のExpert Advisor(自動売買プログラム)。損失許容上限までナンピンで頑張るAE
+MetaTrader4用のExpert Advisor(自動売買プログラム)。損失許容上限までナンピンで頑張るEA
 
 # ステータス
 開発中。まだ後述の極々単純なロジックを実装しただけ。
