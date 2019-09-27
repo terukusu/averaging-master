@@ -1,6 +1,16 @@
 # これは何か
 MetaTrader4用のExpert Advisor(FXやCFDの自動売買プログラム)。損失許容上限までナンピン(最大４回)で頑張るEA
 
+※【注意】このプログラムの使用は自己責任でお願いします。使用者が被るいかなる不利益に対しても当方は一切の責任を負いません。
+
+# ライセンス
+```
+Copyright 2018, Teruhiko Kusunoki
+
+Released under the MIT license
+https://opensource.org/licenses/mit-license.php
+```
+
 # アイデア
 - 実はエントリーのタイミングや方向は大した問題ではないのでは？
 - 以下の方針で利益が出せるのでは？

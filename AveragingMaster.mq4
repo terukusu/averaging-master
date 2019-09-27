@@ -1,11 +1,15 @@
 ﻿//+------------------------------------------------------------------+
 //|                                              AveragingMaster.mq4 |
 //|                               Copyright 2018, Teruhiko Kusunoki. |
-//|                                        https://www.terukusu.org/ |
+//|                                                                  |
+//|                                   Released under the MIT license |
+//|                  https://opensource.org/licenses/mit-license.php |
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2018, Teruhiko Kusunoki"
-#property link      "https://www.terukusu.org/"
+#property link      "https://github.com/terukusu/averaging-master"
 #property version   "1.0"
+#property description "Released under the MIT license"
+#property description "https://opensource.org/licenses/mit-license.php"
 #property strict
 
 #include <stdlib.mqh>
