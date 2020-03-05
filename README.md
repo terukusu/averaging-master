@@ -48,5 +48,5 @@ https://opensource.org/licenses/mit-license.php
 
 # バックテスト結果
 2003年6月1日〜2018年3月30日
-![AveragingMaster_2003-2018_20170401](https://www.terukusu.org/test/AveragingMaster_2003-2018_20170401.gif)  
+![AveragingMaster_2003-2018_20170401](https://user-images.githubusercontent.com/205033/75986847-28754900-5f32-11ea-9447-b66264603e5e.gif)  
 [バックテスト結果の詳細](https://www.terukusu.org/test/AveragingMaster_2003-2018_20170401.htm)
